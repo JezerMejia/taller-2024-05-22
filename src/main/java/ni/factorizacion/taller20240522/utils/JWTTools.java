@@ -24,7 +24,7 @@ public class JWTTools {
 
         return Jwts.builder()
                 .claims(claims)
-                .subject(user.getEmail())
+                .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + exp))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))

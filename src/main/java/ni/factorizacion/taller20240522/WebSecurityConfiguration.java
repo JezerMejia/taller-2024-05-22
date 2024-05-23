@@ -22,7 +22,17 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class WebSecurityConfiguration {
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder = new PasswordEncoder() {
+        @Override
+        public String encode(CharSequence rawPassword) {
+            return rawPassword.toString();
+        }
+
+        @Override
+        public boolean matches(CharSequence rawPassword, String encodedPassword) {
+            return encodedPassword.equals(rawPassword.toString());
+        }
+    };
 
     @Autowired
     private UserService userService;
@@ -39,7 +49,7 @@ public class WebSecurityConfiguration {
                 .userDetailsService(username -> {
                     User user = userService.findByUsername(username);
 
-                    if(user == null)
+                    if (user == null)
                         throw new UsernameNotFoundException("User: " + username + ", not found!");
 
                     return user;

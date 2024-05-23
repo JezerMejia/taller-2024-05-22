@@ -8,6 +8,8 @@ public interface UserService {
 
     Boolean validAuthentication(User user, String password);
 
+    User findUserAuthenticated();
+
     Token registerToken(User user) throws Exception;
     Boolean isTokenValid(User user, String token);
     void cleanTokens(User user) throws Exception;

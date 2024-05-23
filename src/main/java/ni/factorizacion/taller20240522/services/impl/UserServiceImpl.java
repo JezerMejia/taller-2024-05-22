@@ -8,6 +8,7 @@ import ni.factorizacion.taller20240522.repositories.UserRepository;
 import ni.factorizacion.taller20240522.services.UserService;
 import ni.factorizacion.taller20240522.utils.JWTTools;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean validAuthentication(User user, String password) {
         return user.getPassword().equals(password);
+    }
+
+    @Override
+    public User findUserAuthenticated() {
+        String username = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        return userRepository.findByUsername(username);
     }
 
     @Override
