@@ -1,6 +1,7 @@
 package ni.factorizacion.taller20240522.services.impl;
 
 import jakarta.transaction.Transactional;
+import ni.factorizacion.taller20240522.domain.dtos.SaveUserDto;
 import ni.factorizacion.taller20240522.domain.entities.Token;
 import ni.factorizacion.taller20240522.domain.entities.User;
 import ni.factorizacion.taller20240522.repositories.TokenRepository;
@@ -25,7 +26,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-        return userRepository.findAll();
+        return userRepository.findAllByActive(true);
+    }
+
+    @Override
+    public void saveUser(SaveUserDto userDto) {
+        var user = new User();
+
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setUsername(userDto.getUsername());
+        user.setPassword(userDto.getPassword());
+        user.setEmail(userDto.getEmail());
+        user.setActive(true);
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public void toggleActive(User user) {
+        user.setActive(!user.getActive());
+        userRepository.save(user);
     }
 
     @Override
