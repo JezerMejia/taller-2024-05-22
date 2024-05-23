@@ -27,12 +27,14 @@ public class User implements UserDetails {
     @NotEmpty
     private String username;
     @NotEmpty
+    @JsonIgnore
     private String password;
 
     @NotEmpty
     private String email;
 
     @Column(insertable = false)
+    @JsonIgnore
     private Boolean active;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -40,6 +42,7 @@ public class User implements UserDetails {
     private List<Token> tokens;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
@@ -47,21 +50,25 @@ public class User implements UserDetails {
     //getUsername is already overridden
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return false;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return false;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return false;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return this.active;
     }

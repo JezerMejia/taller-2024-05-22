@@ -3,7 +3,11 @@ package ni.factorizacion.taller20240522.services;
 import ni.factorizacion.taller20240522.domain.entities.Token;
 import ni.factorizacion.taller20240522.domain.entities.User;
 
+import java.util.List;
+
 public interface UserService {
+    List<User> findAll();
+
     User findByUsername(String username);
 
     Boolean validAuthentication(User user, String password);
