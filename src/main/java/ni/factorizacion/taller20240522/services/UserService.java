@@ -4,6 +4,9 @@ import ni.factorizacion.taller20240522.domain.entities.Token;
 import ni.factorizacion.taller20240522.domain.entities.User;
 
 public interface UserService {
+    User findByUsername(String username);
+
+    Boolean validAuthentication(User user, String password);
 
     Token registerToken(User user) throws Exception;
     Boolean isTokenValid(User user, String token);

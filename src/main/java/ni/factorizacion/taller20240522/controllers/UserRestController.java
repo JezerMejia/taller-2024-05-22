@@ -4,7 +4,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ni.factorizacion.taller20240522.domain.dtos.GeneralResponse;
 import ni.factorizacion.taller20240522.domain.dtos.TokenDTO;
+import ni.factorizacion.taller20240522.domain.dtos.UserLoginDto;
 import ni.factorizacion.taller20240522.domain.entities.Token;
+import ni.factorizacion.taller20240522.domain.entities.User;
+import ni.factorizacion.taller20240522.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -16,7 +19,7 @@ import java.util.List;
 @RequestMapping(value = "/api/users/", produces = "application/json")
 @RequiredArgsConstructor
 public class UserRestController {
-//    private final UserService service;
+    private final UserService service;
 
     @GetMapping
     public ResponseEntity<GeneralResponse<List<String>>> getAllUsers() {
@@ -29,14 +32,19 @@ public class UserRestController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@ModelAttribute @Valid UserLoginDTO info, BindingResult validations){
+    public ResponseEntity<GeneralResponse<TokenDTO>> login(@ModelAttribute @Valid UserLoginDto info, BindingResult validations){
+        User user = service.findByUsername(info.getUsername());
+
+        if (!service.validAuthentication(user, info.getPassword())) {
+            return GeneralResponse.getResponse(HttpStatus.UNAUTHORIZED, "Invalid authentication", null);
+        }
 
         try {
-            Token token = userService.registerToken(user);
-            return new ResponseEntity<>(new TokenDTO(token), HttpStatus.OK);
+            Token token = service.registerToken(user);
+            return GeneralResponse.getResponse(HttpStatus.OK, "", new TokenDTO(token));
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Error", null);
         }
     }
 }

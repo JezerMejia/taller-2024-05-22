@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import ni.factorizacion.taller20240522.domain.entities.Token;
 import ni.factorizacion.taller20240522.domain.entities.User;
 import ni.factorizacion.taller20240522.repositories.TokenRepository;
+import ni.factorizacion.taller20240522.repositories.UserRepository;
 import ni.factorizacion.taller20240522.services.UserService;
 import ni.factorizacion.taller20240522.utils.JWTTools;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,18 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private TokenRepository tokenRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public Boolean validAuthentication(User user, String password) {
+        return user.getPassword().equals(password);
+    }
 
     @Override
     @Transactional(rollbackOn = Exception.class)
