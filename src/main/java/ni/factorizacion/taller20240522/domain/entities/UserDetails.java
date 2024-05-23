@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-public class User {
+public class User implements UserDetails{
     @Id()
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
@@ -26,4 +26,31 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Token> tokens;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    //getUsername is already overridden
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.active;
+    }
 }
