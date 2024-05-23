@@ -24,3 +24,7 @@ spring:
     properties:
       hibernate:
         globally_quoted_identifiers: true
+
+jwt:
+  secret: "Hola"
+  exptime: 1296000000
