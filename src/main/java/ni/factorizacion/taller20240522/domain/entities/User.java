@@ -5,13 +5,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Data
-public class User implements UserDetails{
+public class User implements UserDetails {
     @Id()
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
@@ -21,11 +24,16 @@ public class User implements UserDetails{
     @NotNull
     private String lastName;
 
-    @NotNull
-    private String identifier;
+    @NotEmpty
+    private String username;
+    @NotEmpty
+    private String password;
 
     @NotEmpty
     private String email;
+
+    @Column(insertable = false)
+    private Boolean active;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
