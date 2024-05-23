@@ -2,6 +2,7 @@ package ni.factorizacion.taller20240522.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -22,6 +23,9 @@ public class User implements UserDetails{
 
     @NotNull
     private String identifier;
+
+    @NotEmpty
+    private String email;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
