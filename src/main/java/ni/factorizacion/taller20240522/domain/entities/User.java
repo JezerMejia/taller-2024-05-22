@@ -33,7 +33,6 @@ public class User implements UserDetails {
     @NotEmpty
     private String email;
 
-    @Column(insertable = false)
     @JsonIgnore
     private Boolean active;
 

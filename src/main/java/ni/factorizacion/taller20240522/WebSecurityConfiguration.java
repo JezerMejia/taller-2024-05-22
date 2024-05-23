@@ -49,7 +49,7 @@ public class WebSecurityConfiguration {
                 .userDetailsService(username -> {
                     User user = userService.findByUsername(username);
 
-                    if (user == null)
+                    if (user == null || !user.getActive())
                         throw new UsernameNotFoundException("User: " + username + ", not found!");
 
                     return user;

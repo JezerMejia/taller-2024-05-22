@@ -23,6 +23,10 @@ public class AuthRestController {
     public ResponseEntity<GeneralResponse<TokenDTO>> login(@Valid @RequestBody UserLoginDto info, BindingResult validations) {
         User user = service.findByUsername(info.getUsername());
 
+        if (user == null || !user.getActive()) {
+            return GeneralResponse.getResponse(HttpStatus.UNAUTHORIZED, "User not found", null);
+        }
+
         if (!service.validAuthentication(user, info.getPassword())) {
             return GeneralResponse.getResponse(HttpStatus.UNAUTHORIZED, "Invalid authentication", null);
         }
