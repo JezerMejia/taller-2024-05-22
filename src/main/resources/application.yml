@@ -26,5 +26,5 @@ spring:
         globally_quoted_identifiers: true
 
 jwt:
-  secret: "Hola"
+  secret: "57a1d08de87943568b154380f0af7070337d3392b184eb02e5fa03d246911fd2"
   exptime: 1296000000
